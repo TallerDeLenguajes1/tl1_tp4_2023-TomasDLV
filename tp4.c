@@ -22,6 +22,7 @@ void main(){
     scanf("%d",&numTarea);
     tareasPen = (Tarea **)malloc(sizeof(Tarea *)*numTarea);
     iniciarTarea(tareasPen,numTarea);
+    iniciarTarea(tareasRe,numTarea);   
     cargaDeTarea(tareasPen,numTarea);
 
     mostrarTarea(tareasPen,numTarea);
@@ -29,24 +30,25 @@ void main(){
     int contRe = 0;
     for (int i = 0; i < numTarea; i++)
     {   
-        char respuesta[2];
+        int respuesta;
         printf("\n¿La tarea %d esta realizada?",i+1);
         fflush(stdin);
-        gets(respuesta);
-        if (1==strcmp(respuesta,"si"))
+        scanf("%d",&respuesta);
+        if (1 == respuesta)
         {
             tareasRe[contRe] = tareasPen[i];
             contRe++;
             tareasPen[i]=NULL;
-        }
-        
+        }   
     }
-    
+    printf("\n-----------Tareas REALIZADAS----------\n");
+    mostrarTarea(tareasRe,numTarea);
+    printf("\n-----------Tareas PENDIENTES----------\n");
+    mostrarTarea(tareasPen,numTarea);
 
-    iniciarTarea(tareasPen,numTarea);
-    iniciarTarea(tareasRe,numTarea);   
+
     
-    liberarTarea(tareas,numTarea);
+    
     liberarTarea(tareasPen,numTarea);
     liberarTarea(tareasRe,numTarea);
 
@@ -73,13 +75,16 @@ void cargaDeTarea(Tarea **tareas,int numTarea){
 }
 
 void mostrarTarea(Tarea **tareas,int numTarea){
-    printf("\nAqui tus tareas:\n\n");
+    printf("\nAqui tus tareas:");
     for (int k = 0; k < numTarea; k++)
     {
-        printf("\n\nNumero de Tarea %d",k+1);
-        printf("\nDescripcion: ");
-        puts(tareas[k]->Descripcion);
-        printf("\nDuracion: %d",tareas[k]->Duracion);
+        if (tareas[k] != NULL)
+        {
+            printf("\n\nNumero de Tarea: %d",k+1);
+            printf("\nDescripcion: ");
+            puts(tareas[k]->Descripcion);
+            printf("\nDuracion: %d",tareas[k]->Duracion);
+        }        
     }
 }
 void liberarTarea(Tarea **tareas,int numTarea){
