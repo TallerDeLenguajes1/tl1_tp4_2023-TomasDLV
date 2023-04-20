@@ -12,6 +12,7 @@ void iniciarTarea(Tarea **tareas,int numTarea);
 void cargaDeTarea(Tarea **tareas,int numTarea);
 void mostrarTarea(Tarea **tareas,int numTarea);
 void liberarTarea(Tarea **tareas,int numTarea);
+void buscaTareaPalabra(Tarea **tareas,int numTarea,char* palabra);
 
 
 void main(){
@@ -46,7 +47,12 @@ void main(){
     printf("\n-----------Tareas PENDIENTES----------\n");
     mostrarTarea(tareasPen,numTarea);
 
-
+    //Buscar por palabra
+    printf("\nIngresar una palabra: ");
+    char palabra[20];
+    fflush(stdin);
+    gets(palabra);
+    buscaTareaPalabra(tareasRe,numTarea,palabra);
     
     
     liberarTarea(tareasPen,numTarea);
@@ -66,6 +72,7 @@ void cargaDeTarea(Tarea **tareas,int numTarea){
        {
         tareas[i] = (Tarea *)malloc(sizeof(Tarea));
         printf("\nTarea numero %d",i+1);
+        tareas[i]->TareaID = i+1;
         printf("\nIngresar descripcion :  ");
         fflush(stdin);
         tareas[i]->Descripcion = malloc(sizeof(char )*60);
@@ -93,4 +100,20 @@ void liberarTarea(Tarea **tareas,int numTarea){
         free(tareas[j]->Descripcion);
         free(tareas[j]);
     }
+}
+void buscaTareaPalabra(Tarea **tareas,int numTarea,char* palabra){
+
+    for (int i = 0; i < numTarea; i++)
+    {
+
+        if (tareas[i] != NULL && strstr(tareas[i]->Descripcion,palabra))
+        {
+            printf("\n\nNumero de Tarea: %d",tareas[i]->TareaID);
+            printf("\nDescripcion: ");
+            puts(tareas[i]->Descripcion);
+            printf("\nDuracion: %d",tareas[i]->Duracion);
+            return;
+        }    
+    }
+    printf("\nNo se encontro la tarea.");
 }
