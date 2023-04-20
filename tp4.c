@@ -12,6 +12,7 @@ void iniciarTarea(Tarea **tareas,int numTarea);
 void cargaDeTarea(Tarea **tareas,int numTarea);
 void mostrarTarea(Tarea **tareas,int numTarea);
 void liberarTarea(Tarea **tareas,int numTarea);
+void buscaTarea(Tarea **tareas,int numTarea,int id);
 void buscaTareaPalabra(Tarea **tareas,int numTarea,char* palabra);
 
 
@@ -47,6 +48,13 @@ void main(){
     printf("\n-----------Tareas PENDIENTES----------\n");
     mostrarTarea(tareasPen,numTarea);
 
+    printf("\nIngrese la tarea a buscar");
+    
+    int buscar;
+    fflush(stdin);
+    scanf("%d",&buscar);
+    buscaTarea(tareasRe,numTarea,buscar);
+   
     //Buscar por palabra
     printf("\nIngresar una palabra: ");
     char palabra[20];
@@ -72,10 +80,10 @@ void cargaDeTarea(Tarea **tareas,int numTarea){
        {
         tareas[i] = (Tarea *)malloc(sizeof(Tarea));
         printf("\nTarea numero %d",i+1);
-        tareas[i]->TareaID = i+1;
+        tareas[i]->TareaID=i+1;
         printf("\nIngresar descripcion :  ");
         fflush(stdin);
-        tareas[i]->Descripcion = malloc(sizeof(char )*60);
+        tareas[i]->Descripcion = malloc(sizeof(char )*30);
         gets(tareas[i]->Descripcion);
         tareas[i]->Duracion= rand()%91+10;
     }
@@ -87,7 +95,7 @@ void mostrarTarea(Tarea **tareas,int numTarea){
     {
         if (tareas[k] != NULL)
         {
-            printf("\n\nNumero de Tarea: %d",k+1);
+            printf("\n\nNumero de Tarea: %d",tareas[k]->TareaID);
             printf("\nDescripcion: ");
             puts(tareas[k]->Descripcion);
             printf("\nDuracion: %d",tareas[k]->Duracion);
@@ -100,6 +108,23 @@ void liberarTarea(Tarea **tareas,int numTarea){
         free(tareas[j]->Descripcion);
         free(tareas[j]);
     }
+}
+void buscaTarea(Tarea **tareas,int numTarea,int id){
+
+    for (int i = 0; i < numTarea; i++)
+    {
+        printf("\n%d",tareas[i]->TareaID);
+        
+        if (tareas[i] != NULL && tareas[i]->TareaID == id)
+        {
+            printf("\n\nNumero de Tarea: %d",tareas[i]->TareaID);
+            printf("\nDescripcion: ");
+            puts(tareas[i]->Descripcion);
+            printf("\nDuracion: %d",tareas[i]->Duracion);
+            return;
+        }    
+    }
+    printf("\nNo se encontro la tarea.");
 }
 void buscaTareaPalabra(Tarea **tareas,int numTarea,char* palabra){
 
