@@ -26,8 +26,8 @@ void borrarTarea(Lista *l, int idTarea);
 void mostrarTareas(Lista l);
 void realizarTarea(Lista *l1, Lista *l2, int idTarea);
 void liberarTarea(Lista *l);
-// void buscaTareaId(Lista l, int id);
-// void buscaTareaPalabra(Lista l, char *palabra);
+void buscaTareaId(Lista l, int id);
+void buscaTareaPalabra(Lista l, char *palabra);
 
 int main() {
     Lista tareasPen, tareasRe;
@@ -61,7 +61,6 @@ int main() {
                 printf("\nEscriba el ID de la tarea que desea marcar como realizada: ");
                 scanf("%d", &idTarea);
                 realizarTarea(&tareasPen, &tareasRe, idTarea);
-                //borrarTarea(&tareasPen,idTarea);
                 break;
 
             case 4:
@@ -71,22 +70,22 @@ int main() {
 
             case 5:
                 printf("\nIngrese el ID de la tarea Pendiente a buscar: ");
-                // scanf("%d", &idTarea);
-                // buscaTareaId(tareasPen, idTarea);
+                scanf("%d", &idTarea);
+                buscaTareaId(tareasPen, idTarea);
                 break;
 
             case 6:
                 printf("\nIngrese la palabra clave de la tarea Pendiente a buscar: ");
-                // fflush(stdin);
-                // fgets(palabra, sizeof(palabra), stdin);
-                // palabra[strcspn(palabra, "\n")] = '\0';
-                // buscaTareaPalabra(tareasPen, palabra);
+                fflush(stdin);
+                fgets(palabra, sizeof(palabra), stdin);
+                palabra[strcspn(palabra, "\n")] = '\0';
+                buscaTareaPalabra(tareasPen, palabra);
                 break;
 
             case 7:
                 printf("\nIngrese el ID de la tarea Realizada a buscar: ");
-                // scanf("%d", &idTarea);
-                // buscaTareaId(tareasRe, idTarea);
+                scanf("%d", &idTarea);
+                buscaTareaId(tareasRe, idTarea);
                 break;
 
             case 8:
@@ -235,30 +234,30 @@ void liberarTarea(Lista *l) {
     }
 }
 
-// void buscaTareaId(Lista l, int id) {
-//     Lista aux = l;
-//     while (aux != NULL) {
-//         if (aux->T.TareaID == id) {
-//             printf("\n\nNumero de Tarea: %d", aux->T.TareaID);
-//             printf("\nDescripcion: %s", aux->T.Descripcion);
-//             printf("\nDuracion: %d", aux->T.Duracion);
-//             return;
-//         }
-//         aux = aux->siguiente;
-//     }
-//     printf("\nNo se encontró la tarea.\n");
-// }
+void buscaTareaId(Lista l, int id) {
+    Lista aux = l;
+    while (aux != NULL) {
+        if (aux->T.TareaID == id) {
+            printf("\n\nNumero de Tarea: %d", aux->T.TareaID);
+            printf("\nDescripcion: %s", aux->T.Descripcion);
+            printf("\nDuracion: %d", aux->T.Duracion);
+            return;
+        }
+        aux = aux->siguiente;
+    }
+    printf("\nNo se encontro la tarea.\n");
+}
 
-// void buscaTareaPalabra(Lista l, char *palabra) {
-//     Lista aux = l;
-//     while (aux != NULL) {
-//         if (strstr(aux->T.Descripcion, palabra) != NULL) {
-//             printf("\n\nNumero de Tarea: %d", aux->T.TareaID);
-//             printf("\nDescripcion: %s", aux->T.Descripcion);
-//             printf("\nDuracion: %d", aux->T.Duracion);
-//             return;
-//         }
-//         aux = aux->siguiente;
-//     }
-//     printf("\nNo se encontró la tarea.\n");
-// }
+void buscaTareaPalabra(Lista l, char *palabra) {
+    Lista aux = l;
+    while (aux != NULL) {
+        if (strstr(aux->T.Descripcion, palabra) != NULL) {
+            printf("\n\nNumero de Tarea: %d", aux->T.TareaID);
+            printf("\nDescripcion: %s", aux->T.Descripcion);
+            printf("\nDuracion: %d", aux->T.Duracion);
+            return;
+        }
+        aux = aux->siguiente;
+    }
+    printf("\nNo se encontró la tarea.\n");
+}
