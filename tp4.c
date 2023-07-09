@@ -28,14 +28,18 @@ void realizarTarea(Lista *l1, Lista *l2, int idTarea);
 void liberarTarea(Lista *l);
 void buscaTareaId(Lista l, int id);
 void buscaTareaPalabra(Lista l, char *palabra);
+void mostrarDatos(Lista l);//tp5
+void mostrarMenuSeleccion();
 
 int main() {
     Lista tareasPen, tareasRe;
+    Lista tareasEnProceso;//tp5 agrego tareasEnProceso
     int opcion = 0, contador = 0, idTarea;
     char palabra[30];
 
     tareasPen = crearLista();
     tareasRe = crearLista();
+    tareasEnProceso = crearLista();//tp5
 
     do {
         mostrarMenu();
@@ -55,54 +59,48 @@ int main() {
             case 2:
                 printf("\n-----------Tareas PENDIENTES----------\n");
                 mostrarTareas(tareasPen);
-                break;
-
-            case 3:
-                printf("\nEscriba el ID de la tarea que desea marcar como realizada: ");
-                scanf("%d", &idTarea);
-                realizarTarea(&tareasPen, &tareasRe, idTarea);
-                break;
-
-            case 4:
+                printf("\n-----------Tareas EN PROCESO----------\n");
+                mostrarTareas(tareasEnProceso);
                 printf("\n-----------Tareas REALIZADAS----------\n");
                 mostrarTareas(tareasRe);
                 break;
 
+            case 3:
+                int opcion2;
+                printf("\nEscriba el ID de la tarea que desea seleccionar: ");
+                scanf("%d", &idTarea);
+                mostrarMenuSeleccion();
+                do
+                {
+                    printf("\nIngresa una opcion: ");
+                    scanf("%d",&opcion2);
+                } while (opcion2 < 1 || opcion2 > 4);
+                switch (opcion2)
+                {
+                case 1:
+                    realizarTarea(&tareasPen, &tareasRe, idTarea);
+                    break;
+                case 2:
+                    realizarTarea(&tareasPen, &tareasEnProceso, idTarea);
+                    break;
+                case 3:
+                    borrarTarea(&tareasPen,idTarea);
+                    break;
+                case 4:
+                    break;
+                }
+                break;
+
+            case 4:
+                printf("\nDatos de Tareas PENDIENTES");
+                mostrarDatos(tareasPen);
+                printf("\nDatos de Tareas En PROCESO");
+                mostrarDatos(tareasEnProceso);
+                printf("\nDatos de Tareas REALIZADAS");
+                mostrarDatos(tareasRe);
+                break;
+
             case 5:
-                printf("\nIngrese el ID de la tarea Pendiente a buscar: ");
-                scanf("%d", &idTarea);
-                buscaTareaId(tareasPen, idTarea);
-                break;
-
-            case 6:
-                printf("\nIngrese la palabra clave de la tarea Pendiente a buscar: ");
-                fflush(stdin);
-                fgets(palabra, sizeof(palabra), stdin);
-                palabra[strcspn(palabra, "\n")] = '\0';
-                buscaTareaPalabra(tareasPen, palabra);
-                break;
-
-            case 7:
-                printf("\nIngrese el ID de la tarea Realizada a buscar: ");
-                scanf("%d", &idTarea);
-                buscaTareaId(tareasRe, idTarea);
-                break;
-
-            case 8:
-                printf("\nIngrese la palabra clave de la tarea Realizada a buscar: ");
-                // fflush(stdin);
-                // fgets(palabra, sizeof(palabra), stdin);
-                // palabra[strcspn(palabra, "\n")] = '\0';
-                // buscaTareaPalabra(tareasRe, palabra);
-                break;
-
-            case 9:
-                printf("\nIngrese el ID de la tarea Pendiente a quitar: ");
-                scanf("%d", &idTarea);
-                borrarTarea(&tareasPen, idTarea);
-                break;
-
-            case 10:
                 return 0;
 
             default:
@@ -110,7 +108,7 @@ int main() {
                 break;
         }
 
-    } while (opcion != 10);
+    } while (opcion != 5);
 
     liberarTarea(&tareasPen);
     liberarTarea(&tareasRe);
@@ -121,15 +119,10 @@ int main() {
 void mostrarMenu() {
     printf("\n");
     printf("1. Cargar Tarea/s Pendiente/s\n");
-    printf("2. Mostrar Tarea/s Pendiente/s\n");
-    printf("3. Marcar como tarea realizada\n");
-    printf("4. Mostrar Tarea/s Realizada/s\n");
-    printf("5. Buscar tarea Pendiente por ID\n");
-    printf("6. Buscar tarea Pendiente por palabra clave\n");
-    printf("7. Buscar tarea Realizada por ID\n");
-    printf("8. Buscar tarea Realizada por palabra clave\n");
-    printf("9. Quitar tarea pendiente\n");
-    printf("10. Salir\n");
+    printf("2. Mostrar Tareas\n");
+    printf("3. Operar tarea\n");
+    printf("4. Mostrar datos de las tareas\n");
+    printf("5. Salir\n");
 }
 
 Lista crearLista() {
@@ -260,4 +253,23 @@ void buscaTareaPalabra(Lista l, char *palabra) {
         aux = aux->siguiente;
     }
     printf("\nNo se encontró la tarea.\n");
+}
+void mostrarDatos(Lista l){
+    int contador = 0;
+    int duracionTotal = 0;
+    Lista aux = l;
+    while (aux != NULL)
+    {
+        contador++;
+        duracionTotal+= aux->T.Duracion;
+        aux = aux->siguiente;
+    }
+    printf("\nCantidad de tareas: %d",contador);
+    printf("\nDuracion total : %d",duracionTotal);
+}
+void mostrarMenuSeleccion(){
+    printf("\n 1. Mover a Tareas REALIZADAS");
+    printf("\n 2. Mover a Tareas En PROCESO");
+    printf("\n 3. Eliminar Tarea");
+    printf("\n 4. Cancelar");
 }
